@@ -15,11 +15,11 @@ activity.forEach((el) => {
   const dt = el.querySelector(".title");
   title.push(dt.textContent);
 });
-const chaneTime = (time, el) => {
+const chaneTime = () => {
   const timeZone = data.map((x) => {
     return {
       title: x.title,
-      zone: x.timeframes[time],
+      zone: x.timeframes[localStorage.getItem("time") || "weekly"],
     };
   });
   activity.forEach((el) => {
@@ -36,16 +36,27 @@ const chaneTime = (time, el) => {
     about.insertAdjacentHTML("afterbegin", html);
   });
   let current = document.querySelector(".active");
-  if (el.target == current) return;
+  let el = document.querySelector(
+    `.${localStorage.getItem("time") || "weekly"}`
+  );
+  if (el == current) return;
   current.classList.remove("active");
-  el.target.classList.add("active");
+  el.classList.add("active");
 };
+window.addEventListener("load", function () {
+  chaneTime();
+});
 daily.addEventListener("click", function (e) {
-  chaneTime("daily", e);
+  localStorage.setItem("time", "daily");
+
+  chaneTime();
 });
 monthly.addEventListener("click", function (e) {
-  chaneTime("monthly", e);
+  localStorage.setItem("time", "monthly");
+
+  chaneTime();
 });
 weekly.addEventListener("click", function (e) {
-  chaneTime("weekly", e);
+  localStorage.setItem("time", "weekly");
+  chaneTime();
 });
